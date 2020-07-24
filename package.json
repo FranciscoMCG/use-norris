@@ -1,6 +1,13 @@
 {
   "version": "0.1.0",
   "license": "MIT",
+  "name": "@franciscomcg/use-norris",
+  "author": "Francisco Gomes",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FranciscoMCG/use-norris"
+  },
+  "module": "dist/use-norris.esm.js",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -14,7 +21,8 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint",
+    "lint": "tsdx lint 'src/**/*.{ts,tsx}'",
+    "lint:fix": "tsdx lint 'src/**/*.{ts,tsx}' --fix",
     "prepare": "tsdx build"
   },
   "peerDependencies": {
@@ -22,7 +30,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint"
+      "pre-commit": "tsdx lint 'src/**/*.{ts,tsx}'"
     }
   },
   "prettier": {
@@ -31,11 +39,10 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "@franciscomcg/use-norris",
-  "author": "Francisco Gomes",
-  "module": "dist/use-norris.esm.js",
   "devDependencies": {
-    "@testing-library/react-hooks": "^3.3.0",
+    "@testing-library/jest-dom": "^5.11.1",
+    "@testing-library/react-hooks": "^3.4.1",
+    "@types/jest": "^26.0.7",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "husky": "^4.2.5",

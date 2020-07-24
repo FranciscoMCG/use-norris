@@ -6,10 +6,14 @@ const App = () => {
   const initialState = {
     value: '',
   };
-  const { norris, error } = useNorris(initialState);
+  const { norris, isLoading, error } = useNorris(initialState);
 
   if (error) {
     console.log(error);
+  }
+
+  if (isLoading) {
+    return <p>Loading...</p>;
   }
 
   if (norris) {
