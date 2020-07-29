@@ -2,13 +2,13 @@ import { renderHook } from '@testing-library/react-hooks';
 
 import useNorris from '../';
 
-const mockedResponse = {
+const mockedValue = {
   value: 'this is a very good joke',
 };
 
 (global.fetch as jest.Mock) = jest.fn(() =>
   Promise.resolve({
-    json: () => Promise.resolve(mockedResponse),
+    json: () => Promise.resolve(mockedValue),
   })
 );
 describe('useNorris', () => {
@@ -18,14 +18,20 @@ describe('useNorris', () => {
 
   it('should resolve', async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useNorris({ value: '' })
+      useNorris({
+        response: mockedValue,
+        isLoading: false,
+        errorMessage: '',
+        isError: false,
+      })
     );
     await waitForNextUpdate();
     expect(fetch).toHaveBeenCalled();
     expect(result.current).toEqual({
-      error: null,
+      response: mockedValue,
+      errorMessage: '',
       isLoading: false,
-      norris: mockedResponse,
+      isError: false,
     });
   });
 
@@ -34,14 +40,20 @@ describe('useNorris', () => {
       Promise.reject('There is an error')
     );
     const { result, waitForNextUpdate } = renderHook(() =>
-      useNorris({ value: '' })
+      useNorris({
+        response: { value: '' },
+        isLoading: false,
+        errorMessage: '',
+        isError: false,
+      })
     );
     await waitForNextUpdate();
     expect(fetch).toHaveBeenCalled();
     expect(result.current).toEqual({
-      error: 'There is an error',
-      isLoading: true,
-      norris: { value: '' },
+      errorMessage: 'There is an error',
+      isLoading: false,
+      response: { value: '' },
+      isError: true,
     });
   });
 });
