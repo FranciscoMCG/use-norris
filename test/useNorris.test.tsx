@@ -13,9 +13,7 @@ const mockedResponse = {
 );
 describe('useNorris', () => {
   beforeEach(() => {
-    beforeEach(() => {
-      (fetch as jest.Mock).mockClear();
-    });
+    (fetch as jest.Mock).mockClear();
   });
 
   it('should resolve', async () => {
