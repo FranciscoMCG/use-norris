@@ -1,4 +1,4 @@
-# use-norris
+# useNorris
 
 ![Chuck Norris](./src/images/chuck-norris.png)
 
@@ -31,22 +31,30 @@ import useNorris from '@franciscomcg/use-norris';
 
 const App = () => {
   const initialState = {
-    value: '',
+    response: '',
+    isLoading: false,
+    isError: false,
+    errorMessage: null,
   };
-  const { norris, isLoading, error } = useNorris(initialState);
+  const { response, isLoading, isError, errorMessage } = useNorris(
+    initialState
+  );
 
-  if (error) {
-    console.log(error);
+  if (errorMessage) {
+    return <p>{errorMessage}</p>;
+  }
+
+  if (isError) {
+    return <p>Something went wrong</p>;
   }
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
 
-  if (norris) {
-    return <p>{norris && norris.value}</p>;
+  if (response) {
+    return <p>{response.value}</p>;
   }
-
   return <p>Something went wrong</p>;
 };
 
