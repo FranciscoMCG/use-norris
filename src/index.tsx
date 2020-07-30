@@ -11,21 +11,21 @@ enum ActionType {
   FETCH_INIT = 'FETCH_INIT',
   FETCH_SUCCESS = 'FETCH_SUCCESS',
   FETCH_FAILURE = 'FETCH_FAILURE',
-  NOT_FOUND = 'NOT_FOUND',
+  DATA_NOT_FOUND = 'DATA_NOT_FOUND',
 }
 
-const { FETCH_FAILURE, FETCH_INIT, FETCH_SUCCESS, NOT_FOUND } = ActionType;
+const { FETCH_FAILURE, FETCH_INIT, FETCH_SUCCESS, DATA_NOT_FOUND } = ActionType;
 
-type ResourceAction =
+type UseNorrisAction =
   | { type: ActionType.FETCH_SUCCESS; payload: string }
   | {
       type: ActionType.FETCH_FAILURE;
       payload: { isError: boolean; errorMessage: string | null };
     }
   | { type: ActionType.FETCH_INIT }
-  | { type: ActionType.NOT_FOUND; payload: string };
+  | { type: ActionType.DATA_NOT_FOUND; payload: string };
 
-const initialState = {
+const initialState: InitialState = {
   response: '',
   errorMessage: null,
   isLoading: false,
@@ -34,7 +34,7 @@ const initialState = {
 
 const useNorrisReducer = (
   state: InitialState = initialState,
-  action: ResourceAction
+  action: UseNorrisAction
 ) => {
   switch (action.type) {
     case FETCH_INIT:
@@ -57,9 +57,10 @@ const useNorrisReducer = (
         isError: action.payload.isError,
         errorMessage: action.payload.errorMessage,
       };
-    case NOT_FOUND:
+    case DATA_NOT_FOUND:
       return {
         ...state,
+        isLoading: false,
         isError: true,
         errorMessage: action.payload,
       };
@@ -80,7 +81,7 @@ const useNorris = (initialState: InitialState) => {
         const json = await res.json();
 
         if (json.error) {
-          dispatch({ type: NOT_FOUND, payload: json.error });
+          dispatch({ type: DATA_NOT_FOUND, payload: json.error });
         }
         if (json.value) {
           dispatch({ type: FETCH_SUCCESS, payload: json });
